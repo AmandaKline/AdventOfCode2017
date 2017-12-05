@@ -23,6 +23,8 @@ using namespace std;
 int main(){
   int data = 368078;
 
+  //----------------------------part 1-----------------------------------------
+
   int rootSquareBefore = (int)sqrt(data);
   int rootSquareAfter = rootSquareBefore + 1;
 
@@ -49,13 +51,11 @@ int main(){
     //if it's on the right or top
     if((pow(rootSquareAfter, 2) - data) < sideLen){
       //if it's on the top
-      /**/cout << "top" << endl;
       mid = pow(rootSquareAfter, 2) - sideLen/2 - 1;
       movesToMid = abs(data-mid);
     }
     else if((data - pow(rootSquareBefore, 2)) < sideLen){
       //if it's on the right
-      /**/ cout << "right" << endl;
       mid = pow(rootSquareBefore, 2) - sideLen/2;
       movesToMid = abs(data-mid);
     }
@@ -68,13 +68,11 @@ int main(){
     //if it's on the left or bottom
     if((data-pow(rootSquareBefore, 2)) < sideLen){
       //it's on the left
-      /**/ cout << "left" << endl;
       mid = pow(rootSquareBefore, 2) + sideLen/2 + 1;
       movesToMid = abs(data-mid);
     }
     else if((pow(rootSquareAfter, 2)-data) < sideLen){
       //it's on the bottom
-      /**/ cout << "bottom" << endl;
       mid = pow(rootSquareAfter, 2) - sideLen/2;
       movesToMid = abs(data-mid);
     }
@@ -84,10 +82,11 @@ int main(){
     }
   }
 
-  cout << "Mid is " << mid << endl;
   cout << "The data " << data << " is " << movesToMid << " units from the middle" << endl;
   cout << "It will take " << level + movesToMid << " moves" << endl;
 
+  //----------------------------part 2-----------------------------------------
+  //Too many edge case for how short it would be to do by hand: done in excel
 }
 
 
