@@ -10,6 +10,9 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
+#include <algorithm>
+#include <string>
+#include <cstring>
 
 using namespace std;
 
@@ -22,6 +25,8 @@ int main(){
     cout << "Error opening file " << filename << endl;
     exit(1);
   }
+
+  int part = 2;
 
   string line;
   int numIncorrect = 0;
@@ -37,7 +42,14 @@ int main(){
     string in;
 
     while(is >> in){
-      words.push_back(in);
+      if(part == 1)
+        words.push_back(in);
+      else if(part == 2){
+        char *temp = const_cast<char*>(in.c_str());
+        std::sort(temp, temp+in.length());
+        words.push_back(in);
+      }
+
       for(int i = 0; i < index; ++i){
         if(words[index] == words[i] && !incorrect){
           ++numIncorrect;
