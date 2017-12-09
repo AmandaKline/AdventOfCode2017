@@ -19,8 +19,10 @@ int main(){
 
   if(!fin.is_open()){
     cout << "Error opening file " << filename << endl;
-    exit(1);
+    return 1;
   }
+
+  int part = 2;
 
   vector<int> instructions;
   int in;
@@ -31,7 +33,16 @@ int main(){
   int position = 0, jumps = 0;
   while(position  >= 0 && position < (int)instructions.size()){
     int moves = instructions[position];
-    ++instructions[position];
+
+    if(part == 1)
+      ++instructions[position];
+    else if(part == 2){
+      if(moves >= 3)
+        --instructions[position];
+      else
+        ++instructions[position];
+    }
+
     position += moves;
 
     ++jumps;
