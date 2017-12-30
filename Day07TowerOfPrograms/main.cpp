@@ -15,7 +15,7 @@
 using namespace std;
 
 int main(){
-  string filename = "test.txt";
+  string filename = "data.txt";
   ifstream fin;
   fin.open(filename);
 
@@ -93,7 +93,28 @@ int main(){
   cout << "The root of the tree is " << tree.getRoot()->getName() << endl;
 
   //---------------------Part 2-----------------------
+  Node * progUnbalanced = tree.findUnbalanced(tree.getRoot());
+  /**/ cout << "found unbalanced program" << endl;
+  /**/ if(progUnbalanced == nullptr) cout << "It's nullptr" << endl;
+  /**/ else cout << "Program: " << progUnbalanced->getName() << endl;
+  Node * supporting = progUnbalanced->getPrev();
 
+  vector<int> weights;
+  for(Node *ptr : supporting->getNexts()){
+    cout << "Adding weight " << tree.towerWeight(ptr) << " to weights<>" << endl;
+    weights.push_back(tree.towerWeight(ptr));
+  }
+
+  for(int i = 0; i < (int)weights.size(); ++i){
+    if(weights[i] == tree.towerWeight(progUnbalanced)){
+      weights.erase(weights.begin()+i);
+      i = weights.size();
+    }
+  }
+
+  int amtLess = weights[0]-tree.towerWeight(progUnbalanced);
+  cout << "The program " << progUnbalanced->getName() << " needs to weigh " << amtLess << " less" << endl;
+  cout << "It currently weighs " << progUnbalanced->getWeight() << endl;
 
   //delete dynamic nodes
   for(int i = 0; i < (int)nodes.size(); ++i){

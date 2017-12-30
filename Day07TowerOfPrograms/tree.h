@@ -51,6 +51,18 @@ class Tree{
 private:
   Node *root;
 
+  bool isBalanced(Node * n){
+    int weight = 0;
+    for(Node * ptr : n->getNexts()){
+      if(weight == 0)
+        weight = towerWeight(ptr);
+      else if(weight != towerWeight(ptr))
+        return false;
+    }
+
+    return true;
+  }
+
 public:
   Tree() : root(nullptr) {}
 
@@ -84,10 +96,8 @@ public:
     for(int i = 0; i < (int)cur->getUnmatchedNext().size(); ++i){
       for(int j = 0; j < (int)nodes.size(); ++j){
         if(nodes[j]->getName() == (cur->getUnmatchedNext())[i]){
-          // cout << "Found next program " << nodes[j]->getName() << " for current node " << cur->getName() << endl;
           nodes[j]->setPrev(cur);
           cur->addNext(nodes[j]);
-          // cout << "set prev of " << nodes[j]->getName() << " and added as next to " << cur->getName() << endl;
 
           Node * temp = nodes[j];
           nodes.erase(nodes.begin()+j);
@@ -97,14 +107,47 @@ public:
           //reset loop variables because changed size
           j = nodes.size() + 1;
           --i;
-          // cout << "reset loop vars" << endl;
         }
       }
     }
 
-    // cout << cur->getName() << "'s unmatchedNext is empty. Returning." << endl;
     return; //once all unmatchedNexts are matched, return.
+  }
+
+  int towerWeight(Node * n){
+    if(n->getNexts().empty()){
+      return n->getWeight();
+    }
+    else{
+      int sum = 0;
+      for(Node * ptr : n->getNexts()){
+        sum += towerWeight(ptr);
+      }
+      return sum + n->getWeight(); //everything on top plus own
+    }
+  }
+
+  Node * findUnbalanced(Node * n){
+    vector<Node*> nexts = n->getNexts();
+    for(int i = 0; i < (int)nexts.size(); ++i){
+      /**/cout << nexts[i]->getName() << " isBalanced = " << isBalanced(nexts[i]) << endl;
+      if(!isBalanced(nexts[i])){
+        Node * result = findUnbalanced(nexts[i]);
+        if(result == nullptr){
+          cout << "unbalanced node: " << n->getName() << endl;
+          return n;
+        }
+        else
+          return result;
+      }
+    }
+
+    //if the current disk isn't unbalanced
+    return n;
   }
 };
 
 #endif /* TREE_H_ */
+
+//too high: 449
+//Too low: 123
